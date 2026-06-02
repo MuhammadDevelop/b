@@ -1,0 +1,157 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f3f4f6;
+  color: #333;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.w-full {
+  width: 100%;
+  max-width: 650px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-sizing: border-box;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #1f2937;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.border-b {
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 8px;
+}
+
+form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+input {
+  flex: 1;
+  min-width: 150px;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+}
+
+input[type="number"] {
+  flex: 0 0 90px;
+}
+
+input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.flex-gap {
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+button[type="submit"] {
+  background-color: #2563eb;
+  color: white;
+}
+
+button[type="submit"]:hover {
+  background-color: #1d4ed8;
+}
+
+.bg-yellow-button {
+  background-color: #eab308 !important;
+}
+
+.bg-yellow-button:hover {
+  background-color: #ca8a04 !important;
+}
+
+button[type="button"] {
+  background-color: #9ca3af;
+  color: white;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.divide-y > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.font-medium {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.text-sm {
+  font-size: 14px;
+  color: #6b7280;
+  margin-left: 8px;
+}
+
+.text-xs {
+  font-size: 12px;
+  background-color: #e5e7eb;
+  color: #4b5563;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 12px;
+}
+
+.btn-edit {
+  background-color: #fef08a;
+  color: #854d0e;
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+.btn-delete {
+  background-color: #fee2e2;
+  color: #991b1b;
+  padding: 6px 12px;
+  font-size: 13px;
+  margin-left: 8px;
+}
+
+@media (max-width: 600px) {
+  form { flex-direction: column; }
+  input[type="number"] { flex: 1; }
+  .flex-gap { width: 100%; }
+  .flex-gap button { flex: 1; }
+}

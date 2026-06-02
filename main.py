@@ -1,43 +1,30 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware  # 1. CORS modulini chaqiramiz
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+# 1. Ob'ekt nomini aynan "api" deb belgilaymiz:
 api = FastAPI()
 
-# 2. Ruxsat berilgan domenlar (Origin) ro'yxati
-origins = [
-    "http://localhost:3000",      # Masalan, React yoki Next.js loyihalar uchun
-    "http://127.0.0.1:3000",
-    "http://localhost:5173",      # Vite (Vue/React) loyihalar uchun
-    # "*",                        # Agar xohlagan mehmonga ruxsat bermoqchi bo'lsangiz, shunchaki "*" qo'ying
-]
-
-# 3. CORS ni ilovaga (middleware sifatida) qo'shamiz
+# 2. CORS sozlamalari
 api.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,            # Qaysi domenlardan so'rov qabul qilishni belgilaydi
-    allow_credentials=True,           # Cookie va xavfsizlik tokenlariga ruxsat beradi
-    allow_methods=["*"],              # Barcha metodlarga (GET, POST, PUT, DELETE va h.k.) ruxsat beradi
-    allow_headers=["*"],              # Barcha sarlavhalarga (Headers) ruxsat beradi
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-# Ma'lumotlar bazasi vazifasini bajaruvchi ro'yxat
 insonlar = [
     {"id": 1, "ismi": "Muhammad", "yoshi": 23},
     {"id": 2, "ismi": "Isfandiyor", "yoshi": 15},
-    {"id": 3, "ismi": "Shamsiddin", "yoshi": 13},
-    {"id": 4, "ismi": "MuhammadAli", "yoshi": 15},
-    {"id": 5, "ismi": "Ahror", "yoshi": 15},
-    {"id": 6, "ismi": "Nigina", "yoshi": 13},
-    {"id": 7, "ismi": "Robiya", "yoshi": 13},
+    {"id": 3, "ismi": "Shamsiddin", "yoshi": 13}
 ]
 
 class InsonModel(BaseModel):
     ismi: str
     yoshi: int
 
-
-### 1. READ (Barchasini olish)
+# 3. Dekorator nomi ham aynan "@api.get" bo'lishi shart:
 @api.get("/all")
 def get_all():
     return {
@@ -45,6 +32,10 @@ def get_all():
         "users": insonlar
     }
 
+# Qolgan @api.post, @api.put, @api.delete qismlari ham "@api" bilan boshlanishi kerak...
+
+
+### 2. READ (Bitta insonni ID bo'yicha qidirish)
 @api.get("/user/{user_id}")
 def get_user(user_id: int):
     for inson in insonlar:
@@ -53,8 +44,11 @@ def get_user(user_id: int):
     
     raise HTTPException(status_code=404, detail="Inson topilmadi")
 
+
+### 3. CREATE (Yangi inson qo'shish)
 @api.post("/create")
 def create_user(user: InsonModel):
+    # Ro'yxat bo'sh bo'lmasa oxirgi ID ga 1 ni qo'shadi, aks holda ID dynamic 1 bo'ladi
     yangi_id = insonlar[-1]["id"] + 1 if insonlar else 1
     
     yangi_inson = {
@@ -69,6 +63,8 @@ def create_user(user: InsonModel):
         "user": yangi_inson
     }
 
+
+### 4. UPDATE (Ma'lumotni tahrirlash)
 @api.put("/update/{user_id}")
 def update_user(user_id: int, updated_user: InsonModel):
     for inson in insonlar:
@@ -77,12 +73,14 @@ def update_user(user_id: int, updated_user: InsonModel):
             inson["yoshi"] = updated_user.yoshi
             return {
                 "success": True,
-                "message": "Ma'lumotlar yangilandi",
+                "message": "Ma'lumotlar muvaffaqiyatli yangilandi",
                 "user": inson
             }
             
     raise HTTPException(status_code=404, detail="Yangilash uchun inson topilmadi")
 
+
+### 5. DELETE (O'chirish)
 @api.delete("/delete/{user_id}")
 def delete_user(user_id: int):
     for inson in insonlar:
